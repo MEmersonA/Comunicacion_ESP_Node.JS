@@ -69,7 +69,7 @@ function Sensor(req, res) {
     console.log(datos)
     console.log()
 
-    connection.query(`INSERT INTO temperature_register (temperature_register, register_localtime) VALUES ("${datos.temperatura}°C", "${datos.fecha}")`, function(err, result){
+    connection.query(`INSERT INTO temperature_register_table (temperature_register, register_localtime) VALUES ("${datos.temperatura}°C", "${datos.fecha}")`, function(err, result){
 
                         if(err) throw err
 
@@ -110,10 +110,26 @@ function DataBase(){
 
 }
 
+function Mostrar(req, res ){
+
+    console.log("AAA")
+
+    connection.query("SELECT * FROM temperature_register_table", (err, results) => {
+
+        if(err) throw err
+
+        console.log(results)
+        res.render("db", {results:results})
+
+    })
+
+}
+
 server.get("/", Index)
 server.post("/bin", Bin)
 server.post("/led", Led)
 server.get("/Sensor", Sensor)
 server.get("/Enviar", Enviar)
+server.post("/mostrar", Mostrar)
 
 server.listen(80, DataBase);

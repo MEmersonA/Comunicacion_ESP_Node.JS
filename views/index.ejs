@@ -22,9 +22,6 @@
 
         <input type="submit" value="Enviar" class="formulario__submit">
 
-        <br>
-        <br>
-
     </form>
 
     <form class="formulario" id="formularioLed" action="/led" enctype="application/x-www-form-urlencoded" method="post">
@@ -37,7 +34,31 @@
 
     </form>
 
-    
+    <form class="formulario" id="formularioLed" action="/mostrar" enctype="application/x-www-form-urlencoded" method="post">
+
+        <input type="submit" value="Ver Base de datos" class="formulario__submit">
+
+    </form>
+
+    <script>
+
+        let inputs = document.getElementsByClassName('formulario__input')
+
+        for(let i = 0; i < inputs.length; i++){
+
+            inputs[i].addEventListener('keyup', function(){
+
+                if(this.value.length >= 1){
+                    this.nextElementSibling.classList.add('fijar')
+                }else{
+                    this.nextElementSibling.classList.remove('fijar')
+                }
+
+            })
+
+        }
+
+    </script>
 
 </body>
 </html>
