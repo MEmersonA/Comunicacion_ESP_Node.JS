@@ -1,6 +1,8 @@
 const express = require("express")
 const { response } = require("express")
 const bodyParser = require("body-parser")
+const connection = require("./database")
+
 const KEY = "esp";
 
 const server = express()
@@ -17,7 +19,7 @@ server.set("view engine", "ejs")
 let datosA = []
 let datos
 
-let form = ({ binLed: "7777", mode: "7777" })
+let form = ({ binLed: "0000", mode: "0000" })
 
 function Index(req, res) {
 
@@ -84,10 +86,22 @@ function Enviar(req, res){
 
 }
 
+function DataBase(){
+
+    console.log("Servidor online")
+    connection.connect((err) => {
+
+        if(err) throw err;
+        console.log("Conección exitosa a la base de datos!! :D")
+
+    })
+
+}
+
 server.get("/", Index)
 server.post("/bin", Bin)
 server.post("/led", Led)
 server.get("/Sensor", Sensor)
 server.get("/Enviar", Enviar)
 
-server.listen(80);
+server.listen(80, DataBase);

@@ -78,10 +78,10 @@ void Recibir(){
     binLed = doc["binLed"];
     mode = doc["mode"];
 
-    Serial.print("Se ha recibido binLed: ");
-    Serial.println(binLed);
-    Serial.print("Se ha recibido mode: ");
-    Serial.println(mode);
+    //Serial.print("Se ha recibido binLed: ");
+    //Serial.println(binLed);
+    //Serial.print("Se ha recibido mode: ");
+    //Serial.println(mode);
 
 
   }else{
@@ -101,7 +101,12 @@ void Temperatura(){
 
 void Led(){
 
+  Serial.print("Se ha recibido modo: ");
+  Serial.print(mode);
+
   if(mode == 1){
+
+    Serial.println(" (Binario)");
 
     bl = binLed;
 
@@ -117,15 +122,31 @@ void Led(){
 
       if(bl.charAt(x) == '1'){
         digitalWrite(leds[x], HIGH);
-      }else{
+      }else if(bl.charAt(x) == '0'){
         digitalWrite(leds[x], LOW);
+      }else{
+
+        digitalWrite(leds[0], LOW);
+        digitalWrite(leds[1], LOW);
+        digitalWrite(leds[2], LOW);
+        digitalWrite(leds[3], LOW);
+
+        Serial.println("No se ha digitado un número válido");
+
+        break;
+
       }
 
     }
 
-  }
+    Serial.print("Arreglo: ");
+    Serial.println(bl);
 
+  }
+  
   if(mode == 0){
+
+    Serial.println(" (Led)");
 
     switch(binLed){
       case 0:
@@ -152,7 +173,17 @@ void Led(){
         digitalWrite(leds[2], LOW);
         digitalWrite(leds[3], LOW);
         break;
+      default: 
+        Serial.println("No se ha digitado un número válido");
+        digitalWrite(leds[0], LOW);
+        digitalWrite(leds[1], LOW);
+        digitalWrite(leds[2], LOW);
+        digitalWrite(leds[3], LOW);
+        break;
     }
+
+    Serial.print("Led: ");
+    Serial.println(binLed);
 
   }
 
@@ -165,5 +196,5 @@ void loop() {
   Recibir();
   Led();
 
-  delay(1000);
+  delay(5000);
 }
