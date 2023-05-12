@@ -96,13 +96,18 @@ void Recibir(){
 }
 
 void Temperatura(){
-    temperatura = random(0, 10);
+    temperatura = random(0, 30);
 }
 
 void Led(){
 
   Serial.print("Se ha recibido modo: ");
   Serial.print(mode);
+
+  if(mode == 2){
+    Serial.println();
+    Serial.println("Esperando...");
+  }
 
   if(mode == 1){
 

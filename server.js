@@ -19,7 +19,7 @@ server.set("view engine", "ejs")
 let datosA = []
 let datos
 
-let form = ({ binLed: "0000", mode: "0000" })
+let form = ({ binLed: "0000", mode: "2" })
 
 function Index(req, res) {
 
@@ -69,6 +69,12 @@ function Sensor(req, res) {
     console.log(datos)
     console.log()
 
+    connection.query(`INSERT INTO temperature_register (temperature_register, register_localtime) VALUES ("${datos.temperatura}°C", "${datos.fecha}")`, function(err, result){
+
+                        if(err) throw err
+
+                    })
+
 }
 
 function Enviar(req, res){
@@ -83,6 +89,12 @@ function Enviar(req, res){
         res.status(401)
         res.send({"Error": "llave invalida"})
     }
+
+    console.log()
+    console.log()
+    console.log("-------------------------------------------------")
+    console.log()
+    console.log()
 
 }
 
