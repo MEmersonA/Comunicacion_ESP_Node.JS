@@ -1,7 +1,8 @@
 const express = require("express")
 const { response } = require("express")
 const bodyParser = require("body-parser")
-const connection = require("./database")
+const connection = require("./config/database")
+const TempR = require("./config/noSQLdatabase")
 
 const KEY = "esp";
 
@@ -74,6 +75,13 @@ function Sensor(req, res) {
                         if(err) throw err
 
                     })
+
+    const tempR = new TempR({
+        temp: datos.temperatura,
+        hora: datos.fecha
+    })
+                
+    tempR.save().catch(e => console.log(e))
 
 }
 

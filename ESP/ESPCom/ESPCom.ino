@@ -1,9 +1,15 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#define ADC_VREF_mV    3300.0 // in millivolt
+#define ADC_RESOLUTION 4096.0
+#define PIN_LM35       35 // ESP32 pin GIOP36 (ADC0) connected to LM35
 
 const char* ssid = "KinaWifi";
 const char* password = "L@wrence7590";
+
+//const char* ssid = "EmersonWifi";
+//const char* password = "equisdelol";
 
 String url;
 String httpRequestData,payload;
@@ -42,6 +48,7 @@ void Enviar(){
   HTTPClient http;
   http.addHeader("Content-Type", "text/plain");
   url = "http://192.168.1.35/Sensor?temperatura="+(String)temperatura+"&key=esp";
+  //url = "http://192.168.43.103/Sensor?temperatura="+(String)temperatura+"&key=esp";
   http.begin(url);
   httpResponseCode = http.GET();
   delay(300);
@@ -66,6 +73,7 @@ void Recibir(){
 
   http.addHeader("Content-Type", "text/plain");
   url = "http://192.168.1.35/Enviar?key=esp";
+  //url = "http://192.168.43.103/Enviar?key=esp";
   http.begin(url);
   httpResponseCode = http.GET();
   String payload = http.getString();
@@ -96,7 +104,10 @@ void Recibir(){
 }
 
 void Temperatura(){
-    temperatura = random(0, 30);
+    int adcVal = analogRead(PIN_LM35);
+    float milliVolt = adcVal * (ADC_VREF_mV / ADC_RESOLUTION);
+    float tempC = milliVolt / 10;
+    temperatura = tempC;
 }
 
 void Led(){
@@ -200,6 +211,5 @@ void loop() {
   Enviar();
   Recibir();
   Led();
-
   delay(5000);
 }
